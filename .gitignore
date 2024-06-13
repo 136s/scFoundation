@@ -173,3 +173,8 @@ preprocessing/log
 model/models/models.ckpt
 examples/
 enhancement/pbmc68ksorted_count_50M-0.1B-res_tgthighres1.0_embedding.npy
+ablation/data/
+GEARS/data/gse133344_k562gi_oe_pert227_84986_19264_withtotalcount.h5ad
+genemodule/data/
+mapping/data/
+SCAD/data/split_norm/*.tsv
