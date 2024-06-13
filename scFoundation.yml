@@ -1,0 +1,44 @@
+name: scfd
+channels:
+  - pytorch  # for pytorch and torchvision
+  - conda-forge
+  - pyg  # Graph Neural Network Library for PyTorch
+dependencies:
+  - python
+
+  - numpy
+  - pandas
+  - scipy
+  - keras
+  - deepchem
+  - rdkit
+  - hickle
+  - tqdm
+  - pytorch
+  - torchvision
+  - scanpy
+  - wandb
+  - seaborn
+  - matplotlib
+  - networkx
+  - dcor
+  - scikit-learn
+  - omegaconf
+  - einops
+  - h5py
+
+  - ipykernel
+  - scvi-tools
+  - matplotlib-venn
+  - loompy
+
+  - pip
+  - pip:
+    - pytorch-fast-transformers
+    - local-attention
+    - apex
+    - colorbm
+    - torch-geometric
+
+    - pyscenic
+    - scib
