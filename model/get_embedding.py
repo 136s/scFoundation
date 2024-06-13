@@ -31,7 +31,12 @@ parser.add_argument('--ckpt_name',  type=str, default='01B-resolution', help='ch
 
 args = parser.parse_args()
 
-
+if torch.cuda.is_available():
+    DEVICE = torch.device('cuda')
+elif torch.backends.mps.is_available():
+    DEVICE = torch.device('mps')
+else:
+    DEVICE = torch.device('cpu')
 
 def main_gene_selection(X_df, gene_list):
     """
@@ -146,7 +151,7 @@ def main():
                 else:
                     raise ValueError('pre_normalized must be T or F')
                 tmpdata = (gexpr_feature.iloc[i,:]).tolist()
-                pretrain_gene_x = torch.tensor(tmpdata+[totalcount,totalcount]).unsqueeze(0).cuda()
+                pretrain_gene_x = torch.tensor(tmpdata+[totalcount,totalcount]).unsqueeze(0).to(torch.float32).to(DEVICE)
                 data_gene_ids = torch.arange(19266, device=pretrain_gene_x.device).repeat(pretrain_gene_x.shape[0], 1)
             
             #Single cell
@@ -168,11 +173,11 @@ def main():
 
                 # select resolution
                 if args.tgthighres[0] == 'f':
-                    pretrain_gene_x = torch.tensor(tmpdata+[np.log10(totalcount*float(args.tgthighres[1:])),np.log10(totalcount)]).unsqueeze(0).cuda()
+                    pretrain_gene_x = torch.tensor(tmpdata+[np.log10(totalcount*float(args.tgthighres[1:])),np.log10(totalcount)]).unsqueeze(0).to(torch.float32).to(DEVICE)
                 elif args.tgthighres[0] == 'a':
-                    pretrain_gene_x = torch.tensor(tmpdata+[np.log10(totalcount)+float(args.tgthighres[1:]),np.log10(totalcount)]).unsqueeze(0).cuda()
+                    pretrain_gene_x = torch.tensor(tmpdata+[np.log10(totalcount)+float(args.tgthighres[1:]),np.log10(totalcount)]).unsqueeze(0).to(torch.float32).to(DEVICE)
                 elif args.tgthighres[0] == 't':
-                    pretrain_gene_x = torch.tensor(tmpdata+[float(args.tgthighres[1:]),np.log10(totalcount)]).unsqueeze(0).cuda()
+                    pretrain_gene_x = torch.tensor(tmpdata+[float(args.tgthighres[1:]),np.log10(totalcount)]).unsqueeze(0).to(torch.float32).to(DEVICE)
                 else:
                     raise ValueError('tgthighres must be start with f, a or t')
                 data_gene_ids = torch.arange(19266, device=pretrain_gene_x.device).repeat(pretrain_gene_x.shape[0], 1)

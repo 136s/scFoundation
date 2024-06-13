@@ -8,6 +8,13 @@ import random
 from pretrainmodels import select_model
 import math
 
+if torch.cuda.is_available():
+    DEVICE = torch.device('cuda')
+elif torch.backends.mps.is_available():
+    DEVICE = torch.device('mps')
+else:
+    DEVICE = torch.device('cpu')
+
 def next_16x(x):
     return int(math.ceil(x / 16) * 16)
 
@@ -131,7 +138,8 @@ def load_model_frommmf(best_ckpt_path, key='gene'):
         config['model_type']='flash_all'
     else:
         config=model_data['config']
-        print(config)
+    config['device'] = DEVICE
+    print(config)
     if not config.__contains__('qv_dim'):
         if config['model'] != 'mae_autobin':
             if config.__contains__('dim_head'):
@@ -144,7 +152,7 @@ def load_model_frommmf(best_ckpt_path, key='gene'):
     model = select_model(config)
     model_state_dict = model_data['model_state_dict']    
     model.load_state_dict(model_state_dict)
-    return model.cuda(),config
+    return model.to(DEVICE),config
 
 def main_gene_selection(X_df, gene_list):
     """
