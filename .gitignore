@@ -161,3 +161,14 @@ cython_debug/
 
 .DS_store
 **/*.DS_store/
+
+# VS Code setting
+.vscode/
+
+# ignore downloaded model and tutorial output
+preprocessing/GSM4653863_HC1
+preprocessing/GSM4914711
+preprocessing/figures_new
+preprocessing/log
+model/models/models.ckpt
+examples/
